@@ -11,16 +11,23 @@ BEGIN
 
     OPEN user;
 
-    forEachUser: LOOP
+    forEachUser:
+    LOOP
         FETCH user INTO user_id;
 
         IF user_id IS NULL THEN
             LEAVE forEachUser;
         END IF;
 
-        SELECT sum(score * weight) / sum(weight) INTO avg
-        FROM corrections JOIN projects proj ON proj.id = corrections.project_id
+        SELECT SUM(score * weight) / SUM(weight)
+        INTO avg
+        FROM corrections
+                 INNER JOIN projects ON id = project_id
         WHERE id = user_id;
+
+        UPDATE users
+        SET average_score = avg
+        WHERE user_id = id;
     END LOOP;
     CLOSE user;
 END ##
