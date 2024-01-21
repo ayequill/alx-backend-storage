@@ -5,17 +5,17 @@ DELIMITER ##
 CREATE PROCEDURE ComputeAverageWeightedScoreForUsers()
 BEGIN
     DECLARE avg FLOAT;
-    DECLARE user_id INT;
+    DECLARE userID INT;
     DECLARE user CURSOR FOR SELECT id FROM users;
-    DECLARE CONTINUE HANDLER FOR NOT FOUND SET user_id = NULL;
+    DECLARE CONTINUE HANDLER FOR NOT FOUND SET userID = NULL;
 
     OPEN user;
 
     forEachUser:
     LOOP
-        FETCH user INTO user_id;
+        FETCH user INTO userID;
 
-        IF user_id IS NULL THEN
+        IF userID IS NULL THEN
             LEAVE forEachUser;
         END IF;
 
@@ -23,11 +23,11 @@ BEGIN
         INTO avg
         FROM corrections
                  INNER JOIN projects ON id = project_id
-        WHERE id = user_id;
+        WHERE userID = user_id;
 
         UPDATE users
         SET average_score = avg
-        WHERE user_id = id;
+        WHERE id = userID;
     END LOOP;
     CLOSE user;
 END ##
