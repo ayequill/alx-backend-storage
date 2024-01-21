@@ -1,5 +1,6 @@
 -- A stored procedure to compute weighted average
 -- obtained by a student
+DELIMITER ##
 
 CREATE PROCEDURE ComputeAverageWeightedScoreForUser(userID INT)
 BEGIN
@@ -14,3 +15,6 @@ BEGIN
     SET average_score = avg
     WHERE id = userID;
 END;
+##
+
+DELIMITER ;
