@@ -1,0 +1,2 @@
+// Counts all rows in a collection
+db.school.find().count()
