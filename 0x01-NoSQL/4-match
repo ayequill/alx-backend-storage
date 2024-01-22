@@ -1,0 +1,2 @@
+// Finds a doc with a pattern
+db.find({name: "Holberton school"})
