@@ -1,0 +1,2 @@
+// Uses regex to query
+db.school.find({name: {$regex: /^Holberton/}})
