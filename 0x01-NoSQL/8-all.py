@@ -5,7 +5,7 @@ from pymongo.cursor import Cursor
 from typing import List
 
 
-def list_all(mongo_collection: Collection) -> List:
+def list_all(mongo_collection: Collection) -> Cursor:
     """ Queries and returns all docs in a collection"""
     cursor: Cursor = mongo_collection.find({})
-    return list(cursor)
+    return cursor
