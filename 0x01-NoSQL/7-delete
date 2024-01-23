@@ -1,0 +1,2 @@
+// Deletes all docs that meets a condition
+db.school.deleteMany({name: "Holberton school"})
