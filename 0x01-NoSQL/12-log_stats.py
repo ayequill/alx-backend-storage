@@ -6,6 +6,7 @@ from pymongo.database import Database
 
 
 def connect_db():
+    """Connect DB"""
     db_client: MongoClient = MongoClient('mongodb://127.0.0.1:27017')
     logs_db: Database = db_client.logs
     nginx_col: Collection = logs_db.nginx
