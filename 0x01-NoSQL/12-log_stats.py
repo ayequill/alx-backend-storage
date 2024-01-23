@@ -1,19 +1,17 @@
 #!/usr/bin/env python3
 """queries a collection and prints the results"""
 from pymongo import MongoClient
-from pymongo.collection import Collection
-from pymongo.database import Database
 
 
 def connect_db():
     """Connect DB"""
-    db_client: MongoClient = MongoClient('mongodb://127.0.0.1:27017')
-    logs_db: Database = db_client.logs
-    nginx_col: Collection = logs_db.nginx
+    db_client = MongoClient('mongodb://127.0.0.1:27017')
+    logs_db = db_client.logs
+    nginx_col = logs_db.nginx
     return nginx_col
 
 
-def return_str(method: str, count: int):
+def return_str(method, count):
     """returns a string"""
     return f'\tmethod {method}: {count}'
 
