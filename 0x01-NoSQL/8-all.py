@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" module finds all docs in a collection"""
 from pymongo.collection import Collection
 from pymongo.cursor import Cursor
 from typing import List
