@@ -8,4 +8,4 @@ from typing import List
 def list_all(mongo_collection):
     """ Queries and returns all docs in a collection"""
     cursor = mongo_collection.find()
-    return cursor
+    return (cursor)
