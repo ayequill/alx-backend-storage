@@ -24,7 +24,7 @@ def print_results(methods):
         to_print = db.count_documents({'method': method})
         print(return_str(method, to_print))
     print(db.count_documents(
-        {'method': 'GET', '$and': [{'path': '/status'}]}), 'status check'
+        {'method': 'GET', 'path': '/status'}), 'status check'
     )
 
 
