@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ A module for a cache instance """
 from redis import Redis
-from typing import Union, Callable, Any
+from typing import Union, Callable, Any, List, Tuple
 from uuid import uuid4 as uuid
 from functools import wraps
 
@@ -47,7 +47,7 @@ def replay(method: Callable) -> None:
     print(f"{method_name} was called {len(concat_data)} times")
     for key, rand_id in concat_data:
         key, rand_id = key.decode("utf-8"), rand_id.decode("utf-8")
-        print(f"{method_name}(*({key})) -> {rand_id}")
+        print(f"{method_name}(*{key}) -> {rand_id}")
 
 
 class Cache:
