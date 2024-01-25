@@ -15,9 +15,9 @@ def cache_data(method: Callable) -> Callable:
     def wrapper(url, *args, **kwd):
         key = f"cache:{url}"
         get_data = redis_client.get(key)
-        if get_data:
-            return get_data.decode("utf-8")
         res = method(url, *args, **kwd)
+        if get_data:
+            return res
         redis_client.setex(key, 10, res)
         return res
 
@@ -30,8 +30,7 @@ def count_calls(method: Callable) -> Callable:
     @wraps(method)
     def wrapper(url, *args, **kwd):
         key = f"count:{url}"
-        print(key)
-        redis_client.incr(key)
+        redis_client.incr(key, 1)
         return method(url, *args, **kwd)
 
     return wrapper
@@ -42,3 +41,17 @@ def count_calls(method: Callable) -> Callable:
 def get_page(url: str) -> str:
     res = requests.get(url)
     return res.text
+
+
+if __name__ == "__main__":
+    # Simulate slow response for testing
+    slow_url = "http://slowwly.robertomurray.co.uk/delay/5000/url/http://www.google.com"
+
+    # Access the slow URL multiple times to test counting and caching
+    for _ in range(5):
+        content = get_page(slow_url)
+        print(content)
+
+    # Print access count
+    access_count = redis_client.get(f"count:{slow_url}")
+    print(f"Access count for {slow_url}: {int(access_count)}")
