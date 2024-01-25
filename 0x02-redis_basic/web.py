@@ -3,16 +3,16 @@
 import requests
 from redis import Redis
 from functools import wraps
-from typing import Callable, Awaitable
+from typing import Callable
 
 redis_client = Redis()
 
 
-def cache_data(method: Callable) -> Callable:
+def cache_data(method: Callable[..., str]) -> Callable[..., str]:
     """ Decorator to cache with expiry """
 
     @wraps(method)
-    def wrapper(url, *args, **kwd):
+    def wrapper(url: str, *args, **kwd) -> str:
         """ Wrapper function """
         key = f"cache:{url}"
         get_data = redis_client.get(key)
@@ -25,11 +25,11 @@ def cache_data(method: Callable) -> Callable:
     return wrapper
 
 
-def count_calls(method: Callable) -> Callable:
+def count_calls(method: Callable[..., str]) -> Callable[..., str]:
     """ Decorator to count how many times a method is called """
 
     @wraps(method)
-    def wrapper(url, *args, **kwd):
+    def wrapper(url: str, *args, **kwd) -> str:
         """ Wrapper function """
         key = f"count:{url}"
         redis_client.incr(key, 1)
