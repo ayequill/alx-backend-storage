@@ -41,12 +41,15 @@ def replay(method: Callable) -> None:
     output_key = f"{method_name}:outputs"
 
     input_data = r_client.lrange(input_key, 0, -1)
+    input_data = [data.decode("utf-8") for data in input_data]
+
     output_data = r_client.lrange(output_key, 0, -1)
+    output_data = [data.decode("utf-8") for data in output_data]
+
     concat_data = list(zip(input_data, output_data))
 
     print(f"{method_name} was called {len(concat_data)} times")
     for key, rand_id in concat_data:
-        key, rand_id = key.decode("utf-8"), rand_id.decode("utf-8")
         print(f"{method_name}(*{key}) -> {rand_id}")
 
 
