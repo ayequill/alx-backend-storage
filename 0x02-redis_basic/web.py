@@ -13,6 +13,7 @@ def cache_data(method: Callable) -> Callable:
 
     @wraps(method)
     def wrapper(url, *args, **kwd):
+        """ Wrapper function """
         key = f"cache:{url}"
         get_data = redis_client.get(key)
         res = method(url, *args, **kwd)
@@ -29,6 +30,7 @@ def count_calls(method: Callable) -> Callable:
 
     @wraps(method)
     def wrapper(url, *args, **kwd):
+        """ Wrapper function """
         key = f"count:{url}"
         redis_client.incr(key, 1)
         return method(url, *args, **kwd)
@@ -39,5 +41,6 @@ def count_calls(method: Callable) -> Callable:
 @cache_data
 @count_calls
 def get_page(url: str) -> str:
+    """obtain the HTML content of a particular URL and returns it."""
     res = requests.get(url)
     return res.text
