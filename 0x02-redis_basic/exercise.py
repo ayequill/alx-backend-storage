@@ -33,6 +33,23 @@ def call_history(method: Callable) -> Callable:
     return wrapper
 
 
+def replay(method: Callable) -> None:
+    """display the history of calls of a particular function."""
+    r_client = Redis()
+    method_name = method.__qualname__
+    input_key = f"{method_name}:inputs"
+    output_key = f"{method_name}:outputs"
+
+    input_data = r_client.lrange(input_key, 0, -1)
+    output_data = r_client.lrange(output_key, 0, -1)
+    concat_data = list(zip(input_data, output_data))
+
+    print(f"{method_name} was called {len(concat_data)} times")
+    for key, rand_id in concat_data:
+        key, rand_id = key.decode("utf-8"), rand_id.decode("utf-8")
+        print(f"{method_name}(*({key})) -> {rand_id}")
+
+
 class Cache:
     """ Cache Class for data persistence """
 
@@ -63,3 +80,10 @@ class Cache:
     def get_int(self, key: str) -> int:
         """ Gets and returns a number """
         return int(self._redis.get(key))
+
+
+cache = Cache()
+cache.store("foo")
+cache.store("bar")
+cache.store(42)
+replay(cache.store)
