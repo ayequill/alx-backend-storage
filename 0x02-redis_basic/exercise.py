@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """ A module for a cache instance """
 from redis import Redis
-from typing import Union
+from typing import Union, Callable, Any
 from uuid import uuid4 as uuid
 
 
@@ -9,7 +9,7 @@ class Cache:
     """ Cache Class for data persistence """
 
     def __init__(self):
-        """ Initializer """
+        """ Initialize the instance """
         self._redis = Redis()
         self._redis.flushdb()
 
@@ -18,3 +18,18 @@ class Cache:
         _id = str(uuid())
         self._redis.set(_id, data)
         return _id
+
+    def get(self, key: str, fn: Union[Callable, None] = None) -> (
+            Union)[str, bytes, int, float]:
+        """ Gets a value from redis db with a specified key"""
+        if fn:
+            return fn(self._redis.get(key))
+        return self._redis.get(key)
+
+    def get_str(self, key: str) -> str:
+        """ Gets and returns a string """
+        return str(self._redis.get(key))
+
+    def get_int(self, key: str) -> int:
+        """ Gets and returns a number """
+        return int(self._redis.get(key))
