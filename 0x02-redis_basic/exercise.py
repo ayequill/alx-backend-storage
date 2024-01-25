@@ -83,10 +83,3 @@ class Cache:
     def get_int(self, key: str) -> int:
         """ Gets and returns a number """
         return int(self._redis.get(key))
-
-
-cache = Cache()
-cache.store("foo")
-cache.store("bar")
-cache.store(42)
-replay(cache.store)
