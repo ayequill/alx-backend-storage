@@ -78,8 +78,8 @@ class Cache:
 
     def get_str(self, key: str) -> str:
         """ Gets and returns a string """
-        return str(self._redis.get(key))
+        return self.get(key, fn=str)
 
     def get_int(self, key: str) -> int:
         """ Gets and returns a number """
-        return int(self._redis.get(key))
+        return self.get(key, fn=int)
